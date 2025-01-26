@@ -1,7 +1,6 @@
 import React from 'react'
 
-const VideoCard = ({info}) => {
-    console.log(info)
+const VideoCard = ({info}) => { 
     const {snippet, statistics} = info;
     const {channelTitle, title, thumbnails} = snippet;
 
@@ -17,4 +16,4 @@ const VideoCard = ({info}) => {
   )
 }
 
-export default VideoCard
+export default VideoCard 

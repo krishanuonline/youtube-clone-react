@@ -1,8 +1,21 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { toggleMenu } from '../../utils/appSlice';
+import { YOUTUBE_SEARCH_API } from '../../utils/constants';
 
 const Header = () => {
+
+  const [searchQuery, setSearchQuery] = useState("");
+  console.log(searchQuery)
+
+  useEffect(()=>{
+    getSearchSuggestion();
+  },[searchQuery])
+
+  const getSearchSuggestion = async ()=>{
+    const data = await fetch(YOUTUBE_SEARCH_API+searchQuery);
+    const json = await data.json();
+  }
 
   const dispatch = useDispatch();
 
@@ -20,7 +33,7 @@ const Header = () => {
       </div>
 
       <div className='col-span-10 text-center'>
-        <input className='w-1/2 border border-gray-400 p-2 rounded-l-full' type="text" />
+        <input className='w-1/2 border border-gray-400 p-2 rounded-l-full' type="text" value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)}/>
         <button className='border border-gray-400 p-2 rounded-r-full bg-gray-400 px-5 py-2 cursor-pointer font-bold text-white'>Search</button>
       </div>
 
