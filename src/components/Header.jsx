@@ -6,23 +6,24 @@ import { YOUTUBE_SEARCH_API } from '../../utils/constants';
 const Header = () => {
 
   const [searchQuery, setSearchQuery] = useState("");
-  console.log(searchQuery)
-
+  const [suggestions, setSuggestions] = useState([]);
+ 
   useEffect(()=>{
-
     const timer = setTimeout(()=>{getSearchSuggestion()},2000) //call after 2sec
-
     //before 2sec if user type again then clear the previous timer
     return ()=>{
       clearTimeout(timer)
     }
+
     
   },[searchQuery])
 
   const getSearchSuggestion = async ()=>{
+    console.log(searchQuery)
     const data = await fetch(YOUTUBE_SEARCH_API+searchQuery);
     const json = await data.json();
-    console.log(json);
+    // console.log(json);
+    setSuggestions(json[1]);
   }
 
   const dispatch = useDispatch();
@@ -40,9 +41,20 @@ const Header = () => {
         <img className='h-8' src="https://lh3.googleusercontent.com/3zkP2SYe7yYoKKe47bsNe44yTgb4Ukh__rBbwXwgkjNRe4PykGG409ozBxzxkrubV7zHKjfxq6y9ShogWtMBMPyB3jiNps91LoNH8A=s500" alt="" />
       </div>
 
-      <div className='col-span-10 text-center'>
-        <input className='w-1/2 border border-gray-400 p-2 rounded-l-full' type="text" value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)}/>
-        <button className='border border-gray-400 p-2 rounded-r-full bg-gray-400 px-5 py-2 cursor-pointer font-bold text-white'>Search</button>
+      <div className='col-span-10 mx-auto' >
+        
+        <div className=''>
+          <input className='w-[37rem] border border-gray-400 py-2 px-5 rounded-l-full' type="text" value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)}/>
+          <button className='border border-gray-400 p-2 rounded-r-full bg-gray-400 px-5 py-2 cursor-pointer font-bold text-white'>Search</button>
+        </div>
+
+        <div className='fixed bg-white py-2 px-5 w-[37rem] border border-gray-100 shadow-lg rounded-lg '>
+          <ul>
+            {suggestions.map((item)=>{return(<li className='px-2 my-1 shadow-xs cursor-pointer hover:bg-gray-100' key={item}>{item}</li>)})}
+          </ul>
+
+        </div>
+
       </div>
 
       <div className='col-span-1'>
