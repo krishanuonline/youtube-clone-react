@@ -9,12 +9,20 @@ const Header = () => {
   console.log(searchQuery)
 
   useEffect(()=>{
-    getSearchSuggestion();
+
+    const timer = setTimeout(()=>{getSearchSuggestion()},2000) //call after 2sec
+
+    //before 2sec if user type again then clear the previous timer
+    return ()=>{
+      clearTimeout(timer)
+    }
+    
   },[searchQuery])
 
   const getSearchSuggestion = async ()=>{
     const data = await fetch(YOUTUBE_SEARCH_API+searchQuery);
     const json = await data.json();
+    console.log(json);
   }
 
   const dispatch = useDispatch();
